@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             x:Class="MauiHomework1.MainPage" x:Name="_MainPage_"
+             Title="Анкета разработчика" BackgroundColor="#FFFFFF">
+    <ScrollView x:Name="_MainScrollView_">
+        <VerticalStackLayout x:Name="_FormStack_" Padding="20,24" Spacing="10"
+                             MaximumWidthRequest="640" HorizontalOptions="Fill">
+            <Image x:Name="_DeveloperImage_" Source="developer.png" Aspect="AspectFit"
+                   HeightRequest="72" Margin="0,0,0,4"
+                   SemanticProperties.Description="Значок программного кода" />
+            <Label x:Name="_TitleLabel_" Text="Анкета разработчика"
+                   FontSize="26" FontAttributes="Bold" TextColor="#25384A" />
+            <Label x:Name="_DescriptionLabel_" Text="Расскажите о себе и своих интересах. Поля со звёздочкой обязательны."
+                   FontSize="14" FontAttributes="None" TextColor="#555555" Margin="0,0,0,6" />
+
+            <Label x:Name="_NameLabel_" Text="Имя *" FontSize="16" FontAttributes="Bold" />
+            <Entry x:Name="_NameEntry_" Placeholder="Ваше имя" Keyboard="Text" MaxLength="60"
+                   TextChanged="OnRequiredFieldChanged" />
+            <Label x:Name="_EmailLabel_" Text="Email *" FontSize="16" FontAttributes="Bold" />
+            <Entry x:Name="_EmailEntry_" Placeholder="name@example.com" Keyboard="Email" MaxLength="120"
+                   TextChanged="OnRequiredFieldChanged" />
+            <Label x:Name="_AboutLabel_" Text="Расскажите немного о себе" FontSize="16" FontAttributes="Bold" />
+            <Editor x:Name="_AboutEditor_" Placeholder="Что изучаете и что хотите разработать?"
+                    AutoSize="TextChanges" MaxLength="500" MinimumHeightRequest="90" />
+            <Label x:Name="_DirectionLabel_" Text="Основное направление разработки" FontSize="16" FontAttributes="Bold" />
+            <Picker x:Name="_DirectionPicker_" Title="Выберите направление" SelectedIndex="-1">
+                <Picker.Items>
+                    <x:String x:Name="_MobileOption_">Mobile</x:String>
+                    <x:String x:Name="_BackendOption_">Backend</x:String>
+                    <x:String x:Name="_FrontendOption_">Frontend</x:String>
+                    <x:String x:Name="_DesktopOption_">Desktop</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Label x:Name="_PlatformLabel_" Text="Предпочитаемая платформа" FontSize="16" FontAttributes="Bold" Margin="0,8,0,0" />
+            <VerticalStackLayout x:Name="_PlatformStack_" Spacing="0">
+                <RadioButton x:Name="_AndroidRadio_" Content="Android" GroupName="Platform" Value="Android" IsChecked="False" />
+                <RadioButton x:Name="_IosRadio_" Content="iOS" GroupName="Platform" Value="iOS" IsChecked="False" />
+                <RadioButton x:Name="_WindowsRadio_" Content="Windows" GroupName="Platform" Value="Windows" IsChecked="False" />
+            </VerticalStackLayout>
+            <Label x:Name="_TechnologyLabel_" Text="Интересующие технологии" FontSize="16" FontAttributes="Bold" />
+            <Grid x:Name="_TechnologyGrid_" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <CheckBox x:Name="_DotnetCheckBox_" Grid.Row="0" Grid.Column="0" IsChecked="False" Color="#405D78" />
+                <Label x:Name="_DotnetLabel_" Grid.Row="0" Grid.Column="1" Text=".NET / C#" FontSize="16" FontAttributes="None" VerticalOptions="Center" />
+                <CheckBox x:Name="_SqlCheckBox_" Grid.Row="1" Grid.Column="0" IsChecked="False" Color="#405D78" />
+                <Label x:Name="_SqlLabel_" Grid.Row="1" Grid.Column="1" Text="SQL" FontSize="16" FontAttributes="None" VerticalOptions="Center" />
+            </Grid>
+            <Grid x:Name="_NewsGrid_" RowDefinitions="Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <Label x:Name="_NewsLabel_" Grid.Row="0" Grid.Column="0" Text="Готов получать новости о разработке"
+                       FontSize="16" FontAttributes="None" VerticalOptions="Center" />
+                <Switch x:Name="_NewsSwitch_" Grid.Row="0" Grid.Column="1" IsToggled="False" OnColor="#405D78" />
+            </Grid>
+            <Label x:Name="_StartDateLabel_" Text="Дата начала изучения программирования" FontSize="16" FontAttributes="Bold" />
+            <DatePicker x:Name="_StartDatePicker_" Format="dd.MM.yyyy"
+                        MinimumDate="1980-01-01" MaximumDate="{x:Static sys:DateTime.Today}" Date="2026-01-01" />
+            <Label x:Name="_ExperienceLabel_" Text="Уровень опыта (от 0 до 10)" FontSize="16" FontAttributes="Bold" />
+            <Grid x:Name="_ExperienceGrid_" RowDefinitions="Auto" ColumnDefinitions="*,64" ColumnSpacing="10">
+                <Slider x:Name="_ExperienceSlider_" Grid.Row="0" Grid.Column="0" Minimum="0" Maximum="10" Value="0" />
+                <Label x:Name="_ExperienceValueLabel_" Grid.Row="0" Grid.Column="1"
+                       Text="{Binding Source={x:Reference _ExperienceSlider_}, Path=Value, Mode=OneWay, StringFormat='{0:F1}'}"
+                       FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalTextAlignment="Center" />
+            </Grid>
+
+            <Label x:Name="_RequiredHintLabel_" Text="Заполните имя и email, чтобы получить результат."
+                   FontSize="14" FontAttributes="None" TextColor="#666666" IsVisible="True" />
+            <Label x:Name="_ErrorLabel_" Text="" FontSize="14" FontAttributes="Bold" TextColor="#A22626" IsVisible="False" />
+            <Button x:Name="_SubmitButton_" Text="Показать результат" Clicked="OnShowResultClicked"
+                    BackgroundColor="#405D78" TextColor="White" Margin="0,6,0,0" />
+            <Button x:Name="_ClearButton_" Text="Очистить" Clicked="OnClearClicked"
+                    BackgroundColor="#E7EBEF" TextColor="#25384A" />
+            <VerticalStackLayout x:Name="_ResultStack_" Spacing="8" Padding="12" Margin="0,10,0,0"
+                                 BackgroundColor="#F1F3F5" IsVisible="False">
+                <Label x:Name="_ResultTitleLabel_" Text="Результат анкеты" FontSize="20" FontAttributes="Bold" />
+                <Label x:Name="_ResultLabel_" Text="" FontSize="16" FontAttributes="None" LineBreakMode="WordWrap" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
