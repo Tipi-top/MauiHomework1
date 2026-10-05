@@ -1,0 +1,28 @@
+name: Build MAUI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Windows, Android]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: '21'
+      - name: Install MAUI workloads
+        run: dotnet workload install maui-android maui-windows
+      - name: Restore and build
+        shell: pwsh
+        run: ./build.ps1 -Target ${{ matrix.target }}
